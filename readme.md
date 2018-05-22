@@ -1,4 +1,4 @@
-﻿## Containment navigation property
+﻿## Deep expand not working
 
 Problem: When expanding anything more than 3 levels the JSON output does not return this information.
 
@@ -12,7 +12,7 @@ Metadata:
     </Key>
     <Property Name="Id" Type="Edm.Int64" Nullable="false"/>
     <Property Name="Name" Type="Edm.String"/>
-    <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)" ContainsTarget="true"/>
+    <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)"/>
 </EntityType>
 ```
 Response:
@@ -34,14 +34,25 @@ Response:
 }
 ```
 
-If the property is not marked as **ContainsTarget**, the response contains the data nested at level 4.
+## Solution
+
+All expanded property should be marked as containment navigation property.
 ```csharp
     builder.EntityType<User>()
         .Expand(10, nameof(User.Orders))
-        // The property will be marked as containment navigation property
-        // and expanding anything more than 3 levels the JSON output does not return this information
-        //.ContainsMany(x => x.Orders)
-        ;
+        .ContainsMany(x => x.Orders);
+
+    builder.EntityType<Order>()
+        .Expand(10, nameof(Order.OrderPositions))
+        .ContainsMany(x => x.OrderPositions);
+
+    builder.EntityType<OrderPosition>()
+        .Expand(nameof(OrderPosition.Products))
+        .ContainsMany(x => x.Products);
+
+    builder.EntityType<Product>()
+        .Expand(nameof(Product.Parameters))
+        .ContainsMany(x => x.Parameters);
 ```
 Metadata:
 ```xml
@@ -51,7 +62,7 @@ Metadata:
     </Key>
     <Property Name="Id" Type="Edm.Int64" Nullable="false"/>
     <Property Name="Name" Type="Edm.String"/>
-    <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)"/>
+    <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)" ContainsTarget="true"/>
 </EntityType>
 ```
 Response:
@@ -78,4 +89,3 @@ Response:
 }
 ```
 
-- https://github.com/OData/WebApi/issues/1065
