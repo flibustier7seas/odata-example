@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "0b4a244b-1c17-4729-9273-75a9259d6c4b",
+		"name": "ODataExample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "$metadata",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/$metadata",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"$metadata"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users -> Orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users(1)/Orders?$expand=OrderPositions($expand=Products($expand=Parameters))",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users(1)",
+						"Orders"
+					],
+					"query": [
+						{
+							"key": "$expand",
+							"value": "OrderPositions($expand=Products($expand=Parameters))"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users -> FilterByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users/FilterByName(name='User')",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users",
+						"FilterByName(name='User')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users -> FilterOrdersByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users(1)/FilterOrdersByName(name='Order')?$expand=OrderPositions",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users(1)",
+						"FilterOrdersByName(name='Order')"
+					],
+					"query": [
+						{
+							"key": "$expand",
+							"value": "OrderPositions"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users -> Orders -> FilterByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users(1)/Orders/FilterByName(name='Order')",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users(1)",
+						"Orders",
+						"FilterByName(name='Order')"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "f29d080b-b169-4d5c-9484-fda492c88085",
+			"key": "host",
+			"value": "http://localhost:63000/",
+			"type": "string"
+		}
+	]
+}
