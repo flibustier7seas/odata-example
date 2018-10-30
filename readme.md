@@ -1,10 +1,11 @@
-﻿## Deep expand not working
+﻿## OData Web API - deep expand not working
 
 Problem: When expanding anything more than 3 levels the JSON output does not return this information.
 
-Request: ```http://localhost:63773/ODataExample/Users(2)/Orders?$expand=OrderPositions($expand=Products($expand=Parameters))```
+Request: ```http://localhost:63000/v1/Users(2)/Orders?$expand=OrderPositions($expand=Products($expand=Parameters))```
 
 Metadata:
+
 ```xml
 <EntityType Name="User">
     <Key>
@@ -15,28 +16,31 @@ Metadata:
     <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)"/>
 </EntityType>
 ```
+
 Response:
+
 ```json
 {
-    "@odata.context": "http://localhost:63773/odataexample/$metadata#Users(2)/Orders",
-    "value": [{
-        "Id": 21,
-        "Name": "Order_21",
-        "OrderPositions": [{
-            "Id": 211,
-            "Name": "OrderPosition_211",
-            "Products": [{
-                "Id": 2111,
-                "Name": "Product_2111"
-            }]
-        }]
-    }]
+    "@odata.context": "http://localhost:63000/v1/$metadata#Collection(ODataExample.Model.Order)",
+    "value": [
+        {
+            "Id": 21,
+            "Name": "Order_21",
+            "OrderPositions": [
+                {
+                    "Id": 211,
+                    "Name": "OrderPosition_211"
+                }
+            ]
+        }
+    ]
 }
 ```
 
 ## Solution
 
 All expanded property should be marked as containment navigation property.
+
 ```csharp
     builder.EntityType<User>()
         .Expand(10, nameof(User.Orders))
@@ -54,7 +58,9 @@ All expanded property should be marked as containment navigation property.
         .Expand(nameof(Product.Parameters))
         .ContainsMany(x => x.Parameters);
 ```
+
 Metadata:
+
 ```xml
 <EntityType Name="User">
     <Key>
@@ -65,27 +71,37 @@ Metadata:
     <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)" ContainsTarget="true"/>
 </EntityType>
 ```
+
 Response:
+
 ```json
 {
-    "@odata.context": "http://localhost:63773/odataexample/$metadata#Orders",
-    "value": [{
-        "Id": 21,
-        "Name": "Order_21",
-        "OrderPositions": [{
-            "Id": 211,
-            "Name": "OrderPosition_211",
-            "Products": [{
-                "Id": 2111,
-                "Name": "Product_2111",
-                "Parameters": [{
-                    "Id": 21111,
-                    "Name": "Parameter_21111",
-                    "Value": "Value_21111"
-                }]
-            }]
-        }]
-    }]
+    "@odata.context": "http://localhost:63000/v1/$metadata#Users(2)/Orders",
+    "value": [
+        {
+            "Id": 21,
+            "Name": "Order_21",
+            "OrderPositions": [
+                {
+                    "Id": 211,
+                    "Name": "OrderPosition_211",
+                    "Products": [
+                        {
+                            "Id": 2111,
+                            "Name": "Product_2111",
+                            "Parameters": [
+                                {
+                                    "Id": 21111,
+                                    "Name": "Parameter_21111",
+                                    "Value": "Value_21111"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
 ```
 

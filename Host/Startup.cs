@@ -1,5 +1,4 @@
 ﻿using System.Web.Http;
-using Microsoft.OData.UriParser;
 using Microsoft.Owin;
 using ODataExample.Host;
 using ODataExample.Host.OData;
@@ -14,20 +13,10 @@ namespace ODataExample.Host
     {
         public void Configuration(IAppBuilder app)
         {
-            var modelName = nameof(ODataExample);
-            var edmModel = EdmModelBuilder.GetEdmModel();
-
             var config = new HttpConfiguration();
-            config.SetupODataQueryDefaultSettings();
-
-            config.MapODataServiceRoute(
-                routeName: $"{modelName}Route",
-                routePrefix: modelName.ToLowerInvariant(),
-                model: edmModel,
-                uriResolver: new UnqualifiedODataUriResolver());
-
-
             var httpServer = new HttpServer(config);
+
+            httpServer.RegisterODataRoutes(nameof(ODataExample), ODataExampleModelConfiguration.Configure());
             app.UseWebApi(httpServer);
         }
     }
