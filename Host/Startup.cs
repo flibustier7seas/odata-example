@@ -16,7 +16,7 @@ namespace ODataExample.Host
             var config = new HttpConfiguration();
             var httpServer = new HttpServer(config);
 
-            httpServer.RegisterODataRoutes(nameof(ODataExample), ODataExampleModelConfiguration.Configure());
+            httpServer.RegisterODataRoutes(nameof(ODataExample), new ODataExampleModelConfiguration());
             app.UseWebApi(httpServer);
         }
     }

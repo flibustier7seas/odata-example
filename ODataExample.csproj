@@ -45,6 +45,10 @@
       <HintPath>packages\Microsoft.AspNet.OData.7.0.1\lib\net45\Microsoft.AspNet.OData.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.OData.Versioning, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.OData.Versioning.3.0.0-beta1\lib\net45\Microsoft.AspNet.OData.Versioning.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.WebApi.Versioning, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebApi.Versioning.3.0.0-beta1\lib\net45\Microsoft.AspNet.WebApi.Versioning.dll</HintPath>
       <Private>True</Private>

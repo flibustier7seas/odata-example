@@ -1,20 +1,17 @@
 ﻿
 using Microsoft.AspNet.OData.Builder;
-using Microsoft.OData.Edm;
+using Microsoft.Web.Http;
+
 using ODataExample.Model;
 
 namespace ODataExample.OData
 {
-    public static class ODataExampleModelConfiguration
+    public class ODataExampleModelConfiguration : IModelConfiguration
     {
-        public static IEdmModel Configure()
+        public void Apply(ODataModelBuilder builder, ApiVersion apiVersion)
         {
-            var builder = new ODataConventionModelBuilder();
-
             RegisterEntitySets(builder);
-            RegisterEntityTypes(builder);
-
-            return builder.GetEdmModel();
+            AdjustEntityTypes(builder);
         }
 
         private static void RegisterEntitySets(ODataModelBuilder builder)
@@ -22,7 +19,7 @@ namespace ODataExample.OData
             builder.EntitySet<User>("Users");
         }
 
-        private static void RegisterEntityTypes(ODataModelBuilder builder)
+        private static void AdjustEntityTypes(ODataModelBuilder builder)
         {
             // All expanded property should be marked as containment navigation property for deep expanded
             builder.EntityType<User>()
