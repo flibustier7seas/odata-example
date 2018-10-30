@@ -13,6 +13,7 @@ namespace ODataExample.OData
 
             RegisterEntitySets(builder);
             RegisterEntityTypes(builder);
+            RegisterFunctions(builder);
 
             return builder.GetEdmModel();
         }
@@ -42,6 +43,24 @@ namespace ODataExample.OData
                 .ContainsMany(x => x.Parameters);
 
             builder.EntityType<ProductParameters>();
+        }
+
+        private static void RegisterFunctions(ODataModelBuilder builder)
+        {
+            builder.EntityType<User>().Collection
+                .Function("FilterByName")
+                .ReturnsCollection<User>()
+                .Parameter<string>("name").Required();
+
+            builder.EntityType<User>()
+                .Function("FilterOrdersByName")
+                .ReturnsCollectionFromEntitySet<Order>("Orders")
+                .Parameter<string>("name").Required();
+
+            builder.EntityType<Order>().Collection
+                .Function("FilterByName")
+                .ReturnsCollection<Order>()
+                .Parameter<string>("name").Required();
         }
     }
 }
