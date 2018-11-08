@@ -1,12 +1,32 @@
 ﻿# OData Web API bugs
 
+## The IN operator not working with Enum
+
+Request: `http://localhost:63000/v1/Users?$filter=Role in ('Administrator')`
+
+Response:
+
+```json
+{
+    "error": {
+        "code": "",
+        "message": "An error has occurred.",
+        "innererror": {
+            "message": "The value \"Microsoft.OData.ODataEnumValue\" is not of type \"ODataExample.Model.UserRole\" and cannot be used in this generic collection.\r\nParameter name: value",
+            "type": "System.ArgumentException",
+            "stacktrace": "   at System.ThrowHelper.ThrowWrongValueTypeArgumentException(Object value, Type targetType)\r\n   at System.Collections.Generic.List`1.System.Collections.IList.Add(Object item)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.BindCollectionConstantNode(CollectionConstantNode node)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.BindCollectionNode(CollectionNode node)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.Bind(QueryNode node)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.BindInNode(InNode inNode)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.BindSingleValueNode(SingleValueNode node)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.Bind(QueryNode node)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.BindExpression(SingleValueNode expression, RangeVariable rangeVariable, Type elementType)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.BindFilterClause(FilterBinder binder, FilterClause filterClause, Type filterType)\r\n   at Microsoft.AspNet.OData.Query.Expressions.FilterBinder.Bind(IQueryable baseQuery, FilterClause filterClause, Type filterType, ODataQueryContext context, ODataQuerySettings querySettings)\r\n   at Microsoft.AspNet.OData.Query.FilterQueryOption.ApplyTo(IQueryable query, ODataQuerySettings querySettings)\r\n   at Microsoft.AspNet.OData.Query.ODataQueryOptions.ApplyTo(IQueryable query, ODataQuerySettings querySettings)\r\n   at Microsoft.AspNet.OData.EnableQueryAttribute.ApplyQuery(IQueryable queryable, ODataQueryOptions queryOptions)\r\n   at Microsoft.AspNet.OData.EnableQueryAttribute.ExecuteQuery(Object responseValue, IQueryable singleResultCollection, IWebApiActionDescriptor actionDescriptor, Func`2 modelFunction, IWebApiRequestMessage request, Func`2 createQueryOptionFunction)\r\n   at Microsoft.AspNet.OData.EnableQueryAttribute.OnActionExecuted(Object responseValue, IQueryable singleResultCollection, IWebApiActionDescriptor actionDescriptor, IWebApiRequestMessage request, Func`2 modelFunction, Func`2 createQueryOptionFunction, Action`1 createResponseAction, Action`3 createErrorAction)\r\n   at Microsoft.AspNet.OData.EnableQueryAttribute.OnActionExecuted(HttpActionExecutedContext actionExecutedContext)\r\n   at System.Web.Http.Filters.ActionFilterAttribute.OnActionExecutedAsync(HttpActionExecutedContext actionExecutedContext, CancellationToken cancellationToken)\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()\r\n   at System.Web.Http.Filters.ActionFilterAttribute.<CallOnActionExecutedAsync>d__5.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()\r\n   at System.Web.Http.Filters.ActionFilterAttribute.<ExecuteActionFilterAsyncCore>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()\r\n   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()"
+        }
+    }
+}
+```
+
 ## Deep expand not working
 
 Issue: https://github.com/OData/WebApi/issues/226
 
 Problem: When expanding anything more than 3 levels the JSON output does not return this information.
 
-Request: ```http://localhost:63000/v1/Users(2)/Orders?$expand=OrderPositions($expand=Products($expand=Parameters))```
+Request: `http://localhost:63000/v1/Users(2)/Orders?$expand=OrderPositions($expand=Products($expand=Parameters))`
 
 Metadata:
 
@@ -113,7 +133,7 @@ Response:
 
 Issue: https://github.com/OData/WebApi/issues/255
 
-Request: ```http://localhost:63000/v1/Users(1)/FilterOrdersByName(name='Order')```
+Request: `http://localhost:63000/v1/Users(1)/FilterOrdersByName(name='Order')`
 
 ```csharp
 builder.EntityType<User>()

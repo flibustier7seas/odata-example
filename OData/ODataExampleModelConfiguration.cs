@@ -28,6 +28,7 @@ namespace ODataExample.OData
             // All expanded property should be marked as containment navigation property for deep expanded
             builder.EntityType<User>()
                 .Expand(10, nameof(User.Orders))
+                .Filter()
                 .ContainsMany(x => x.Orders);
 
             builder.EntityType<Order>()

@@ -12,6 +12,7 @@ namespace ODataExample.Storage
             {
                 Id = 1,
                 Name = "User_1",
+                Role = UserRole.Administrator,
                 Orders = new[]
                 {
                     new Order
@@ -86,6 +87,7 @@ namespace ODataExample.Storage
             {
                 Id = 2,
                 Name = "User_2",
+                Role = UserRole.Manager,
                 Orders = new[]
                 {
                     new Order
