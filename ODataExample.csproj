@@ -131,12 +131,6 @@
   <ItemGroup>
     <Content Include="readme.md" />
     <Content Include="packages.config" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -145,7 +139,11 @@
     <Compile Include="Host\OData\HttpConfigurationExtensions.cs" />
     <Compile Include="Host\OData\HttpServerExtensions.cs" />
     <Compile Include="Host\Startup.cs" />
-    <Compile Include="Model\Entities.cs" />
+    <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\OrderPosition.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\ProductParameters.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Storage\UserQuery.cs" />
     <Compile Include="OData\Controllers\UsersController.cs" />
     <Compile Include="OData\ODataExampleModelConfiguration.cs" />

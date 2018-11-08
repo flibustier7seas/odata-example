@@ -80,8 +80,8 @@ namespace ODataExample.Storage
                         Id = 13,
                         Name= "Order_13"
                     }
-            }
-        },
+                }
+            },
             new User
             {
                 Id = 2,
@@ -118,9 +118,10 @@ namespace ODataExample.Storage
                             }
                         }
                     }
+                }
             }
-        }
-    };
+        };
+
         public IQueryable<User> GetUsers()
         {
             return users.AsQueryable();
