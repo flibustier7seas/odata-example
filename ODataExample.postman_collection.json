@@ -6,6 +6,185 @@
 	},
 	"item": [
 		{
+			"name": "Functions with optional parameter",
+			"item": [
+				{
+					"name": "Users/GetFullName(firstName='Foo')",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/v1/Users/GetFullName(firstName='Foo')",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"Users",
+								"GetFullName(firstName='Foo')"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users/GetFullName(firstName='Alice',lastName='Bar')",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/v1/Users/GetFullName(firstName='Alice',lastName='Bar')",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"Users",
+								"GetFullName(firstName='Alice',lastName='Bar')"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users/GetFirstName()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/v1/Users/GetFirstName()",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"Users",
+								"GetFirstName()"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users/GetFirstName(firstName='Foo')",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/v1/Users/GetFirstName(firstName='Foo')",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"Users",
+								"GetFirstName(firstName='Foo')"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7902cd46-14d8-4832-8a5e-961a5a4b4f79",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "81cf02fc-7841-449c-bfb2-55fa14e7fef9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Functions returns entities",
+			"item": [
+				{
+					"name": "Users(1)/Orders/FilterByName(name='Order')",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/v1/Users(1)/Orders/FilterByName(name='Order')",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"Users(1)",
+								"Orders",
+								"FilterByName(name='Order')"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users(1)/FilterOrdersByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/v1/Users(1)/FilterOrdersByName(name='Order')?$expand=OrderPositions",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"Users(1)",
+								"FilterOrdersByName(name='Order')"
+							],
+							"query": [
+								{
+									"key": "$expand",
+									"value": "OrderPositions"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users/FilterByName(name='User')",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/v1/Users/FilterByName(name='User')",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"Users",
+								"FilterByName(name='User')"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "$metadata",
 			"request": {
 				"method": "GET",
@@ -44,7 +223,82 @@
 			"response": []
 		},
 		{
-			"name": "Users -> Orders",
+			"name": "Users?$filter=Name in ('User_1')",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users?$filter=Name in ('User_1')",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users"
+					],
+					"query": [
+						{
+							"key": "$filter",
+							"value": "Name in ('User_1')"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users?$filter=Role eq 'Administrator'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users?$filter=Role eq 'Administrator'",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users"
+					],
+					"query": [
+						{
+							"key": "$filter",
+							"value": "Role eq 'Administrator'"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users?$filter=Role in ('Administrator')",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/v1/Users?$filter=Role in ('Administrator')",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"Users"
+					],
+					"query": [
+						{
+							"key": "$filter",
+							"value": "Role in ('Administrator')"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users(1)/Orders",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -68,78 +322,11 @@
 				}
 			},
 			"response": []
-		},
-		{
-			"name": "Users -> FilterByName",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{host}}/v1/Users/FilterByName(name='User')",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"v1",
-						"Users",
-						"FilterByName(name='User')"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Users -> FilterOrdersByName",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{host}}/v1/Users(1)/FilterOrdersByName(name='Order')?$expand=OrderPositions",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"v1",
-						"Users(1)",
-						"FilterOrdersByName(name='Order')"
-					],
-					"query": [
-						{
-							"key": "$expand",
-							"value": "OrderPositions"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Users -> Orders -> FilterByName",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{host}}/v1/Users(1)/Orders/FilterByName(name='Order')",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"v1",
-						"Users(1)",
-						"Orders",
-						"FilterByName(name='Order')"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"variable": [
 		{
-			"id": "f29d080b-b169-4d5c-9484-fda492c88085",
+			"id": "5bbd8901-3b7a-410c-960e-e6129ce005de",
 			"key": "host",
 			"value": "http://localhost:63000/",
 			"type": "string"
