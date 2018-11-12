@@ -144,6 +144,7 @@
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\ProductParameters.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="OData\Controllers\UsersController.OptionalParameter.cs" />
     <Compile Include="Storage\UserQuery.cs" />
     <Compile Include="OData\Controllers\UsersController.cs" />
     <Compile Include="OData\ODataExampleModelConfiguration.cs" />

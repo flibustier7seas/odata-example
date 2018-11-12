@@ -3,14 +3,13 @@ using System.Web.Http;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Routing;
-using Microsoft.OData.Edm;
 using ODataExample.Model;
 using ODataExample.Storage;
 
 namespace ODataExample.OData.Controllers
 {
     [EnableQuery(MaxExpansionDepth = 10)]
-    public class UsersController : ODataController
+    public partial class UsersController : ODataController
     {
         private readonly UserQuery query = new UserQuery();
 

@@ -62,6 +62,21 @@ namespace ODataExample.OData
                 .Function("FilterByName")
                 .ReturnsCollection<Order>()
                 .Parameter<string>("name").Required();
+
+            #region Optional Parameter
+
+            var getFullName = builder.EntityType<User>().Collection
+                .Function("GetFullName")
+                .Returns<string>();
+            getFullName.Parameter<string>("firstName").Required();
+            getFullName.Parameter<string>("lastName").Optional().HasDefaultValue("Unknown");
+
+            var getFirstName = builder.EntityType<User>().Collection
+                .Function("GetFirstName")
+                .Returns<string>();
+            getFirstName.Parameter<string>("firstName").Optional().HasDefaultValue("Unknown");
+
+            #endregion
         }
     }
 }
