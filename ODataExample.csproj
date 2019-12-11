@@ -134,8 +134,6 @@
     <Compile Include="Host\OData\HttpConfigurationExtensions.cs" />
     <Compile Include="Host\Startup.cs" />
     <Compile Include="Model\Entities.cs" />
-    <Compile Include="OData\Controllers\ProductController.cs" />
-    <Compile Include="OData\Controllers\OrdersController.cs" />
     <Compile Include="Storage\UserQuery.cs" />
     <Compile Include="OData\Controllers\UsersController.cs" />
     <Compile Include="OData\EdmModelBuilder.cs" />

@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Routing;
 using ODataExample.Model;
 using ODataExample.Storage;
 
@@ -30,6 +32,18 @@ namespace ODataExample.OData.Controllers
             return _query.GetUsers()
                     .Where(x => x.Id == key)
                     .SelectMany(x => x.Orders);
+        }
+
+
+        [HttpGet]
+        [ODataRoute("Users/ByOrderName(name={name})")]
+        public IQueryable<User> ByOrderName( string name)
+        {
+            //var path = Request.GetPathHandler().Parse("http://localhost/odata/", "Users", Request.GetRequestContainer());
+            //Request.ODataProperties().Path = path;
+
+            return _query.GetUsers()
+                         .Where(user => user.Orders.Any(order => order.Name.Contains(name)));
         }
     }
 }

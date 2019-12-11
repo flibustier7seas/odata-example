@@ -18,25 +18,26 @@ namespace ODataExample.OData
         private static void RegisterEntitySets(ODataModelBuilder builder)
         {
             builder.EntitySet<User>("Users");
-            builder.EntitySet<Order>("Orders");
-            builder.EntitySet<Product>("Products");
             
             builder.EntityType<User>()
                    .Expand(10, nameof(User.Orders))
-                ;
+                   .ContainsMany(x => x.Orders);
+
+            builder.EntityType<User>().Collection
+                   .Function("ByOrderName")
+                   .ReturnsCollectionFromEntitySet<User>("Users")
+                   .Parameter<string>("name").Required();
 
             builder.EntityType<Order>()
                    .Expand(10, nameof(Order.OrderPositions))
-                ;
+                   .ContainsMany(x => x.OrderPositions);
 
             builder.EntityType<OrderPosition>()
                    .Expand(10, nameof(OrderPosition.Products))
-                ;
+                   .ContainsMany(x => x.Products);
 
             builder.EntityType<Product>()
-                   .Expand(10, nameof(Product.Parameters))
-                ;
-
+                   .Expand(10, nameof(Product.Parameters));
         }
     }
 }
