@@ -34,10 +34,9 @@ namespace ODataExample.OData.Controllers
                     .SelectMany(x => x.Orders);
         }
 
-
         [HttpGet]
         [ODataRoute("Users/ByOrderName(name={name})")]
-        public IQueryable<User> ByOrderName( string name)
+        public IQueryable<User> ByOrderName(string name)
         {
             //var path = Request.GetPathHandler().Parse("http://localhost/odata/", "Users", Request.GetRequestContainer());
             //Request.ODataProperties().Path = path;
