@@ -24,7 +24,6 @@ namespace ODataExample.OData
             builder.EntityType<User>()
                    .Expand(10, nameof(User.Orders))
                    // The property will be marked as containment navigation property
-                   // and expanding anything more than 3 levels the JSON output does not return information
                    .ContainsMany(x => x.Orders)
                 ;
 
