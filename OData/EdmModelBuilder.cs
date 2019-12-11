@@ -23,18 +23,14 @@ namespace ODataExample.OData
             
             builder.EntityType<User>()
                    .Expand(10, nameof(User.Orders))
-                   // The property will be marked as containment navigation property
-                   .ContainsMany(x => x.Orders)
                 ;
 
             builder.EntityType<Order>()
                    .Expand(10, nameof(Order.OrderPositions))
-                   //.ContainsMany(x => x.OrderPositions)
                 ;
 
             builder.EntityType<OrderPosition>()
                    .Expand(10, nameof(OrderPosition.Products))
-                   //.ContainsMany(x => x.Products)
                 ;
 
             builder.EntityType<Product>()
