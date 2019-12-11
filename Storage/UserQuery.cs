@@ -6,7 +6,7 @@ namespace ODataExample.Storage
 {
     public class UserQuery
     {
-        private readonly List<User> users = new List<User>
+        private readonly List<User> _users = new List<User>
         {
             new User
             {
@@ -118,12 +118,13 @@ namespace ODataExample.Storage
                             }
                         }
                     }
+                }
             }
-        }
-    };
+        };
+
         public IQueryable<User> GetUsers()
         {
-            return users.AsQueryable();
+            return _users.AsQueryable();
         }
     }
 }

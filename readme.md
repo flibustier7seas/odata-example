@@ -1,81 +1,112 @@
-﻿## Containment navigation property
+﻿# [OData Bug] Deep expand not working
+
+Package: Microsoft.AspNet.OData.7.2.3
 
 Problem: When expanding anything more than 3 levels the JSON output does not return this information.
 
-Request: ```http://localhost:63773/ODataExample/Users(2)/Orders?$expand=OrderPositions($expand=Products($expand=Parameters))```
+Issue: [MaxExpansionDepth = 0 appears to have no effect](https://github.com/OData/WebApi/issues/1065)
 
-Metadata:
-```xml
-<EntityType Name="User">
-    <Key>
-        <PropertyRef Name="Id"/>
-    </Key>
-    <Property Name="Id" Type="Edm.Int64" Nullable="false"/>
-    <Property Name="Name" Type="Edm.String"/>
-    <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)" ContainsTarget="true"/>
-</EntityType>
-```
-Response:
-```json
-{
-    "@odata.context": "http://localhost:63773/odataexample/$metadata#Users(2)/Orders",
-    "value": [{
-        "Id": 21,
-        "Name": "Order_21",
-        "OrderPositions": [{
-            "Id": 211,
-            "Name": "OrderPosition_211",
-            "Products": [{
-                "Id": 2111,
-                "Name": "Product_2111"
-            }]
-        }]
-    }]
-}
-```
+Request: `http://localhost:63773/ODataExample/Users(2)?$expand=Orders($expand=OrderPositions($expand=Products($expand=Parameters)))`
 
-If the property is not marked as **ContainsTarget**, the response contains the data nested at level 4.
 ```csharp
-    builder.EntityType<User>()
-        .Expand(10, nameof(User.Orders))
-        // The property will be marked as containment navigation property
-        // and expanding anything more than 3 levels the JSON output does not return this information
-        //.ContainsMany(x => x.Orders)
-        ;
+builder.EntitySet<User>("Users");
+builder.EntitySet<Order>("Orders");
+builder.EntitySet<Product>("Products");
+
+builder.EntityType<User>()
+       .Expand(10, nameof(User.Orders))
+       // The property will be marked as containment navigation property
+       // and expanding anything more than 3 levels the JSON output does not return information
+       .ContainsMany(x => x.Orders);
+
+builder.EntityType<Order>()
+       .Expand(10, nameof(Order.OrderPositions));
+
+builder.EntityType<OrderPosition>()
+       .Expand(10, nameof(OrderPosition.Products));
+
+builder.EntityType<Product>()
+       .Expand(10, nameof(Product.Parameters));
 ```
-Metadata:
-```xml
-<EntityType Name="User">
-    <Key>
-        <PropertyRef Name="Id"/>
-    </Key>
-    <Property Name="Id" Type="Edm.Int64" Nullable="false"/>
-    <Property Name="Name" Type="Edm.String"/>
-    <NavigationProperty Name="Orders" Type="Collection(ODataExample.Model.Order)"/>
-</EntityType>
-```
+
 Response:
+
 ```json
 {
-    "@odata.context": "http://localhost:63773/odataexample/$metadata#Orders",
-    "value": [{
-        "Id": 21,
-        "Name": "Order_21",
-        "OrderPositions": [{
-            "Id": 211,
-            "Name": "OrderPosition_211",
-            "Products": [{
-                "Id": 2111,
-                "Name": "Product_2111",
-                "Parameters": [{
-                    "Id": 21111,
-                    "Name": "Parameter_21111",
-                    "Value": "Value_21111"
-                }]
-            }]
-        }]
-    }]
+    "@odata.context": "http://localhost:63773/odataexample/$metadata#Users/$entity",
+    "Id": 2,
+    "Name": "User_2",
+    "Orders@odata.context": "http://localhost:63773/odataexample/$metadata#Users(2)/Orders",
+    "Orders": [
+        {
+            "Id": 21,
+            "Name": "Order_21",
+            "OrderPositions": [
+                {
+                    "Id": 211,
+                    "Name": "OrderPosition_211",
+                    "Products": [
+                        {
+                            "Id": 2111,
+                            "Name": "Product_2111"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
 ```
 
-- https://github.com/OData/WebApi/issues/1065
+## Solution
+
+Mark all expanded properties as **ContainsTarget**.
+
+```csharp
+builder.EntityType<Order>()
+       .Expand(10, nameof(Order.OrderPositions))
+       .ContainsMany(x => x.OrderPositions);
+
+builder.EntityType<OrderPosition>()
+       .Expand(10, nameof(OrderPosition.Products))
+       .ContainsMany(x => x.Products);
+```
+
+Response:
+
+```json
+{
+    "@odata.context": "http://localhost:63773/odataexample/$metadata#Users/$entity",
+    "Id": 2,
+    "Name": "User_2",
+    "Orders": [
+        {
+            "Id": 21,
+            "Name": "Order_21",
+            "OrderPositions": [
+                {
+                    "Id": 211,
+                    "Name": "OrderPosition_211",
+                    "Products": [
+                        {
+                            "Id": 2111,
+                            "Name": "Product_2111",
+                            "Parameters": [
+                                {
+                                    "Id": 21111,
+                                    "Name": "Parameter_21111",
+                                    "Value": "Value_21111"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+## Related issues
+
+-   [Deep expand not working](https://github.com/OData/WebApi/issues/226)
