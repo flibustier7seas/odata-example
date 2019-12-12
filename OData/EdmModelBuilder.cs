@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.OData.Edm;
 using ODataExample.Model;
 
@@ -20,21 +21,20 @@ namespace ODataExample.OData
             builder.EntitySet<User>("Users");
             
             builder.EntityType<User>()
+                   .Filter(QueryOptionSetting.Allowed, nameof(User.Name))
                    .Expand(10, nameof(User.Orders))
-                   .ContainsMany(x => x.Orders);
-
-            builder.EntityType<User>().Collection
-                   .Function("ByOrderName")
-                   .ReturnsCollectionFromEntitySet<User>("Users")
-                   .Parameter<string>("name").Required();
+                   //.ContainsMany(x => x.Orders)
+                ;
 
             builder.EntityType<Order>()
                    .Expand(10, nameof(Order.OrderPositions))
-                   .ContainsMany(x => x.OrderPositions);
+                   //.ContainsMany(x => x.OrderPositions)
+                ;
 
             builder.EntityType<OrderPosition>()
                    .Expand(10, nameof(OrderPosition.Products))
-                   .ContainsMany(x => x.Products);
+                   //.ContainsMany(x => x.Products)
+                ;
 
             builder.EntityType<Product>()
                    .Expand(10, nameof(Product.Parameters));
